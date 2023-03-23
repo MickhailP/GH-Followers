@@ -41,7 +41,7 @@ class FollowerViewCell: UICollectionViewCell {
         }
         
         usernameLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(12)
+			make.bottom.equalToSuperview().inset(12)
             make.leading.trailing.equalTo(contentView).inset(8)
             make.height.equalTo(20)
         }

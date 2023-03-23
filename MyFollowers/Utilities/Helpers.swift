@@ -11,6 +11,7 @@ struct Constants {
     
     struct Images{
         static let logo = "gh-logo"
+		static let emptyStateLogo = "empty-state-logo"
     }
     
     struct ViewSize {

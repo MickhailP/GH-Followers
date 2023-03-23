@@ -80,12 +80,35 @@ extension SceneDelegate {
     func createTabBar() -> UITabBarController {
         let tabBar = UITabBarController()
         tabBar.viewControllers = [createSearchNC(), createFavoritesNC()]
-        UITabBar.appearance().tintColor = .systemGreen
+		
+		let tabBarAppearance = UITabBarAppearance()
+		tabBarAppearance.configureWithOpaqueBackground()
+		UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+		UITabBar.appearance().tintColor = .systemGreen
+		
         return tabBar
     }
     
     func configureNavigationBar() {
-        UINavigationBar.appearance().tintColor = .systemGreen
+		let navBar = UINavigationBar()
+
+		
+		UINavigationBar.appearance().tintColor = .systemGreen
+		
+		
+		let standardAppearance = UINavigationBarAppearance()
+		standardAppearance.configureWithOpaqueBackground()
+		
+		
+		let compactAppearance = standardAppearance.copy()
+		
+		
+		navBar.standardAppearance = standardAppearance
+		navBar.scrollEdgeAppearance = standardAppearance
+		navBar.compactAppearance = compactAppearance
+		if #available(iOS 15.0, *) { // For compatibility with earlier iOS.
+			navBar.compactScrollEdgeAppearance = compactAppearance
+		}
         
     }
     
