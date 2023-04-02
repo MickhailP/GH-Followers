@@ -30,6 +30,7 @@ class GFItemInfoVC: UIViewController {
         super.viewDidLoad()
 		configureBackgroundView()
 		configureStackView()
+		layoutUI()
 
     }
 	
@@ -60,13 +61,15 @@ class GFItemInfoVC: UIViewController {
 		let padding: CGFloat = 20
 		
 		stackView.snp.makeConstraints { make in
-			make.top.leading.trailing.equalToSuperview().offset(padding)
+			make.top.equalTo(view).offset(padding)
+			make.leading.trailing.equalTo(view).inset(padding)
 			make.height.equalTo(50)
 		}
 		
 		actionButton.snp.makeConstraints { make in
 			make.top.equalTo(stackView.snp.bottom).offset(padding)
-			make.leading.trailing.equalToSuperview().offset(padding)
+			make.leading.trailing.equalToSuperview().inset(padding)
+			make.height.equalTo(50)
 		}
 	}
 }

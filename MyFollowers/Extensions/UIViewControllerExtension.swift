@@ -33,6 +33,7 @@ extension UIViewController {
 		UIView.animate(withDuration: 0.25) {
 			containerView.alpha = 0.8
 		}
+		
 		let activityIndicator = UIActivityIndicatorView(style: .large)
 		containerView.addSubview(activityIndicator)
 		activityIndicator.translatesAutoresizingMaskIntoConstraints = false

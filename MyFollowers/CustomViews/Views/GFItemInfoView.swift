@@ -22,6 +22,7 @@ class GFItemInfoView: UIView {
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
+		configureLayout()
 	}
 	
 	
@@ -49,7 +50,7 @@ class GFItemInfoView: UIView {
 		}
 		
 		titleLabel.snp.makeConstraints { make in
-			make.leading.equalTo(symbolImageView).offset(12)
+			make.leading.equalTo(symbolImageView.snp.trailing).offset(12)
 			make.trailing.equalToSuperview()
 			make.centerY.equalTo(symbolImageView)
 			make.height.equalTo(18)
@@ -57,7 +58,7 @@ class GFItemInfoView: UIView {
 		
 		countLabel.snp.makeConstraints { make in
 			make.leading.trailing.equalToSuperview()
-			make.top.equalTo(symbolImageView).offset(5)
+			make.top.equalTo(symbolImageView.snp.bottom).offset(5)
 			make.height.equalTo(18)
 		}
 	}
