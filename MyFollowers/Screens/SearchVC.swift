@@ -18,6 +18,8 @@ class SearchVC: UIViewController {
     
     let padding: CGFloat = 50
     let buttonHeigh: CGFloat = 44
+	
+	
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,13 +28,15 @@ class SearchVC: UIViewController {
         configureTextField()
         configureCallToActionButton()
         createDismissKeyboardTapGesture()
+		
+		
         
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
-        usernameTextfield.text = "" 
+        usernameTextfield.text = "SAllen0400" 
     }
 
     private func configureLogoImageView() {
