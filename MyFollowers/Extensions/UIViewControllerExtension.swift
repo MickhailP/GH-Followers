@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import SafariServices
 
 fileprivate var containerView: UIView!
 
@@ -22,6 +23,7 @@ extension UIViewController {
 			
 		}
 	}
+	
 	
 	func showLoadingView() {
 		containerView = UIView(frame: view.bounds)
@@ -45,6 +47,7 @@ extension UIViewController {
 		activityIndicator.startAnimating()
 	}
 	
+	
 	func dismissLoadingView() {
 		DispatchQueue.main.async {
 			containerView.removeFromSuperview()
@@ -57,6 +60,13 @@ extension UIViewController {
 		let emptySateView = GFEmptyView(message: message)
 		emptySateView.frame = view.bounds
 		view.addSubview(emptySateView)
+	}
+	
+	
+	func presentSafariVC(with url: URL) {
+		let safariVC = SFSafariViewController(url: url)
+		safariVC.preferredControlTintColor = .systemGreen
+		present(safariVC, animated: true)
 	}
 }
 

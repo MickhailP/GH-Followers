@@ -8,13 +8,28 @@
 import UIKit
 import SnapKit
 
+
+//MARK: Delegate Protocol
+protocol UserInfoVCDelegate: AnyObject {
+	func didTapGitHubProfile(for user: User)
+	func didTapGetFollowers(for user: User)
+}
+
+
+//MARK: ViewController
 class UserInfoVC: UIViewController {
 	
 	var userName: String?
+	
 	var itemViews: [UIView] = []
-	var userInfoHeader = UIView()
-	var itemViewOne = UIView()
-	var itemViewTwo = UIView()
+	let userInfoHeader = UIView()
+	let itemViewOne = UIView()
+	let itemViewTwo = UIView()
+	
+	let dateLabel = GFBodyLabel(textAlignment: .center)
+	
+	weak var delegate: FollowerListVCDelegate?
+	
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,31 +60,49 @@ class UserInfoVC: UIViewController {
 			switch result {
 				case .success(let user):
 					DispatchQueue.main.async {
-						self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.userInfoHeader)
-						self.add(childVC: GFRepoItemVC(user: user), to: self.itemViewOne)
-						self.add(childVC: GFFollowersItemVC(user: user), to: self.itemViewTwo)
+						self.configureUIElements(with: user)
 					}
+					
 				case .failure(let error):
 					self.presentGFAlertOnMainTread(title: "Something went wrong", message: "Try again later", buttonTitle: "Ok")
 			}
 		}
 	}
 	
+	private func configureUIElements(with user: User) {
+		
+		let repoItemVC = GFRepoItemVC(user: user)
+		repoItemVC.delegate = self
+		
+		let followerItemVC = GFFollowersItemVC(user: user)
+		followerItemVC.delegate = self
+		
+		add(childVC: GFUserInfoHeaderVC(user: user), to: userInfoHeader)
+		add(childVC: repoItemVC, to: itemViewOne)
+		add(childVC: followerItemVC, to: itemViewTwo)
+		
+		dateLabel.text = "Joined \(user.createdAt.convertToDisplayFormat())"
+	}
+
+	
 	private func layoutUI() {
 		let padding: CGFloat = 20
 		let itemHeight: CGFloat = 180
 		
-		itemViews = [userInfoHeader, itemViewOne, itemViewTwo]
+		itemViews = [userInfoHeader, itemViewOne, itemViewTwo, dateLabel]
 		
 		itemViews.forEach{
 			view.addSubview($0)
 			
 			$0.translatesAutoresizingMaskIntoConstraints = false
 			
-			$0.snp.makeConstraints { make in
-				make.leading.trailing.equalTo(view).inset(padding)
-				make.height.equalTo(itemHeight)
+			if $0 != dateLabel {
+				$0.snp.makeConstraints { make in
+					make.leading.trailing.equalTo(view).inset(padding)
+					make.height.equalTo(itemHeight)
+				}
 			}
+			
 		}
 				
 		userInfoHeader.snp.makeConstraints { make in
@@ -83,6 +116,12 @@ class UserInfoVC: UIViewController {
 		itemViewTwo.snp.makeConstraints { make in
 			make.top.equalTo(itemViewOne.snp.bottom).offset(padding)
 		}
+		
+		dateLabel.snp.makeConstraints { make in
+			make.leading.trailing.equalTo(view).inset(padding)
+			make.top.equalTo(itemViewTwo.snp.bottom).offset(padding)
+			make.height.equalTo(18)
+		}
 	}
 	
 
@@ -95,3 +134,28 @@ class UserInfoVC: UIViewController {
 		containerView.layer.masksToBounds = true
 	}
 }
+
+
+//MARK: UserInfoVCDelegate
+extension UserInfoVC: UserInfoVCDelegate  {
+	func didTapGitHubProfile(for user: User)  {
+		// Show Safari VC
+		guard let url = URL(string: user.htmlUrl) else {
+			presentGFAlertOnMainTread(title: "Invalid URL", message: "The url is incorrect", buttonTitle: "Ok")
+			return
+		}
+		
+		presentSafariVC(with: url)
+	}
+	
+	
+	func didTapGetFollowers(for user: User) {
+		guard user.followers != 0 else {
+			presentGFAlertOnMainTread(title: "No followers", message: "This user doesn't have followers.", buttonTitle: "Ok")
+			return
+		}
+		delegate?.requestFollowers(for: user.login)
+		dismissView()
+	}
+}
+

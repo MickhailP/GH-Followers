@@ -24,8 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = createTabBar()
         window?.makeKeyAndVisible()
         
-        configureNavigationBar()
-        
+		configureNavigationBarAppearance()
     }
 
 
@@ -62,6 +61,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 // MARK: - Configuration methods
 extension SceneDelegate {
+	
+	func createTabBar() -> UITabBarController {
+		let tabBar = UITabBarController()
+		tabBar.viewControllers = [createSearchNC(), createFavoritesNC()]
+		
+		let tabBarAppearance = UITabBarAppearance()
+		tabBarAppearance.configureWithOpaqueBackground()
+		UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+		UITabBar.appearance().tintColor = .systemGreen
+		
+		return tabBar
+	}
+	
     
     func createSearchNC() -> UINavigationController {
         let searchVC = SearchVC()
@@ -78,31 +90,16 @@ extension SceneDelegate {
         return UINavigationController(rootViewController: favoritesNC)
     }
     
-    func createTabBar() -> UITabBarController {
-        let tabBar = UITabBarController()
-        tabBar.viewControllers = [createSearchNC(), createFavoritesNC()]
-		
-		let tabBarAppearance = UITabBarAppearance()
-		tabBarAppearance.configureWithOpaqueBackground()
-		UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-		UITabBar.appearance().tintColor = .systemGreen
-		
-        return tabBar
-    }
     
-    func configureNavigationBar() {
+    func configureNavigationBarAppearance() {
 		let navBar = UINavigationBar()
-
 		
 		UINavigationBar.appearance().tintColor = .systemGreen
-		
 		
 		let standardAppearance = UINavigationBarAppearance()
 		standardAppearance.configureWithOpaqueBackground()
 		
-		
 		let compactAppearance = standardAppearance.copy()
-		
 		
 		navBar.standardAppearance = standardAppearance
 		navBar.scrollEdgeAppearance = standardAppearance
@@ -110,8 +107,6 @@ extension SceneDelegate {
 		if #available(iOS 15.0, *) { // For compatibility with earlier iOS.
 			navBar.compactScrollEdgeAppearance = compactAppearance
 		}
-        
     }
-    
 }
 

@@ -28,6 +28,7 @@ enum Constants {
     
 	enum CellsNames {
         static let followerCell = "FollowerCell"
+		static let favoriteCell = "FavoriteCell"
     }
     
 	enum FontSizes {
