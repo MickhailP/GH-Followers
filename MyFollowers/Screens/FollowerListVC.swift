@@ -12,7 +12,7 @@ protocol FollowerListVCDelegate: AnyObject {
 	func requestFollowers(for username: String)
 }
 
-class FollowerListVC: UIViewController {
+class FollowerListVC: GFDataLoadingVC {
 	
 	enum Section {
 		case main
@@ -21,13 +21,25 @@ class FollowerListVC: UIViewController {
 	var userName: String!
 	var followers: [Follower] = []
 	var filteredFollowers: [Follower] = []
+	
 	private var page = 1
 	private var hasMoreFollowers = true
 	
 	private var isSearching = false
-	
+	private var isLoadingMoreFollowers = false
+
 	private var collectionView: UICollectionView!
 	private var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
+	
+	init(userName: String) {
+		super.init(nibName: nil, bundle: nil)
+		self.userName = userName
+		title = userName
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -109,6 +121,7 @@ class FollowerListVC: UIViewController {
 	
 	@objc func addButtonTapped() {
 		showLoadingView()
+		isLoadingMoreFollowers = true
 		NetworkManager.shared.getUser(for: userName) { [weak self] result in
 			guard let self = self else {
 				return
@@ -131,6 +144,8 @@ class FollowerListVC: UIViewController {
 				case .failure(let error):
 					self.presentGFAlertOnMainTread(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
 			}
+
+			self.isLoadingMoreFollowers = false
 		}
 	}
 }
@@ -170,7 +185,7 @@ extension FollowerListVC: UICollectionViewDelegate {
 			let heigh  = scrollView.frame.size.height
 			
 			if offsetY > contentHeigh - heigh {
-				guard hasMoreFollowers else { return }
+				guard hasMoreFollowers, !isLoadingMoreFollowers else { return }
 				
 				page += 1
 				getFollowers(for: userName, at: page)
@@ -244,7 +259,7 @@ extension FollowerListVC: FollowerListVCDelegate {
 		page = 1
 		isSearching = false
 		hasMoreFollowers = true
-		collectionView.setContentOffset(.zero, animated: true)
+		collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
 		getFollowers(for: username, at: page)
 	}
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FavoritesListVC: UIViewController {
+class FavoritesListVC: GFDataLoadingVC {
 	
 	let tableView = UITableView()
 	var favorites: [Follower] = []
@@ -60,7 +60,7 @@ class FavoritesListVC: UIViewController {
 						}
 					}
 					
-				case .failure(let failure):
+				case .failure(_):
 					self?.presentGFAlertOnMainTread(title: "Something went wrong", message: "Favorites is empty", buttonTitle: "Ok")
 			}
 		}
@@ -83,9 +83,7 @@ extension FavoritesListVC: UITableViewDataSource, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let favorite = favorites[indexPath.row]
 		
-		let destVC = FollowerListVC()
-		destVC.userName = favorite.login
-		destVC.title = favorite.login
+		let destVC = FollowerListVC(userName: favorite.login)
 		
 		navigationController?.pushViewController(destVC, animated: true)
 	}

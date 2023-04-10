@@ -9,25 +9,30 @@ import UIKit
 import SnapKit
 
 class FollowerViewCell: UICollectionViewCell {
+	
     static let reuseID = "FollowerCell"
     
     let avatarImageView = GFAvatarImageView(frame: .zero)
     let usernameLabel = GFTitleLabel(textAlignment: .center, fontSize: 16)
     
+	
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
     }
     
+	
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+	
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()
 		avatarImageView.image = avatarImageView.placeholderImage
 	}
     
+	
     func set(follower: Follower) {
         usernameLabel.text = follower.login
         if let url = follower.avatarURL {
@@ -35,6 +40,7 @@ class FollowerViewCell: UICollectionViewCell {
         }
     }
     
+	
     private func configure() {
         addSubview(avatarImageView)
         addSubview(usernameLabel)

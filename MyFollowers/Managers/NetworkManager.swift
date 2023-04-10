@@ -12,7 +12,7 @@ class NetworkManager {
 	
 	static let shared = NetworkManager()
 	
-	static let cache = NSCache<NSString, UIImage>()
+	private let cache = NSCache<NSString, UIImage>()
 	
 	private let baseURL = "http://api.github.com"
 	
@@ -20,6 +20,7 @@ class NetworkManager {
 	private init() {
 		
 	}
+	
 	
 	func getFollowers(for username: String, page: Int, completionHandler: @escaping (Result<[Follower], ErrorMessage>) -> Void) {
 		
@@ -32,7 +33,7 @@ class NetworkManager {
 		}
 		
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
-			if let error {
+			if error != nil {
 				completionHandler(.failure(.invalidResponse))
 			}
 			
@@ -49,8 +50,8 @@ class NetworkManager {
 			do {
 				let decoder = JSONDecoder()
 				decoder.keyDecodingStrategy = .convertFromSnakeCase
+				decoder.dateDecodingStrategy = .iso8601
 				let decodedData = try JSONDecoder().decode([Follower].self, from: data)
-				print(decodedData)
 				completionHandler(.success(decodedData))
 				
 				
@@ -64,6 +65,7 @@ class NetworkManager {
 		task.resume()
 	}
 	
+	
 	func getUser(for username: String, completionHandler: @escaping (Result<User, ErrorMessage>) -> Void) {
 		
 		let endpoint = baseURL + "/users/\(username)"
@@ -75,7 +77,7 @@ class NetworkManager {
 		}
 		
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
-			if let error {
+			if error != nil {
 				completionHandler(.failure(.invalidResponse))
 			}
 			
@@ -107,4 +109,30 @@ class NetworkManager {
 		task.resume()
 	}
 	
+	func downloadImage(from url: String) async -> UIImage? {
+		
+		if let cachedImage = self.cache.object(forKey: NSString(string: url)) {
+			return cachedImage
+		} else if let fetchedImage = await fetchImage(from: url) {
+			self.cache.setObject(fetchedImage, forKey: NSString(string: url))
+			return fetchedImage
+		}
+		
+		return nil
+	}
+	
+	
+	private func fetchImage(from urlString: String) async -> UIImage? {
+		guard let url = URL(string: urlString) else   {
+			return nil
+		}
+		
+		do {
+			let (data, _) = try await URLSession.shared.data(from: url)
+			return UIImage(data: data)
+		} catch  {
+			print(error)
+			return nil
+		}
+	}
 }

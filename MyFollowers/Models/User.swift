@@ -32,8 +32,6 @@ struct User: Codable {
 		case publicGists = "public_gists"
 		case htmlUrl = "html_url"
 		case createdAt = "created_at"
-		
 	}
-
 }
 

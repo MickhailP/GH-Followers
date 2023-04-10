@@ -17,7 +17,7 @@ protocol UserInfoVCDelegate: AnyObject {
 
 
 //MARK: ViewController
-class UserInfoVC: UIViewController {
+class UserInfoVC: GFDataLoadingVC {
 	
 	var userName: String?
 	
@@ -40,12 +40,14 @@ class UserInfoVC: UIViewController {
 			getUser(userName)
 		}
 		
-		layoutUI()
+		
 	}
     
+	
 	@objc func dismissView() {
 		dismiss(animated: true)
 	}
+	
 	
 	private func configureVC() {
 		view.backgroundColor = .systemBackground
@@ -53,9 +55,17 @@ class UserInfoVC: UIViewController {
 		navigationItem.rightBarButtonItem = doneButton
 	}
 	
+	
 	private func getUser(_ name: String) {
+//		showLoadingView()
+		
 		NetworkManager.shared.getUser(for: name) { [weak self] result in
-			guard let self = self else { return }
+			guard let self = self else {
+				self?.dismissLoadingView()
+				return
+			}
+			
+//			self.dismissLoadingView()
 			
 			switch result {
 				case .success(let user):
@@ -63,11 +73,14 @@ class UserInfoVC: UIViewController {
 						self.configureUIElements(with: user)
 					}
 					
-				case .failure(let error):
-					self.presentGFAlertOnMainTread(title: "Something went wrong", message: "Try again later", buttonTitle: "Ok")
+				case .failure(_):
+					DispatchQueue.main.async{
+						self.showEmptyStateView(with: "Seems there was an error during fetching data from the internet.", in: self.view)
+					}
 			}
 		}
 	}
+	
 	
 	private func configureUIElements(with user: User) {
 		
@@ -81,7 +94,12 @@ class UserInfoVC: UIViewController {
 		add(childVC: repoItemVC, to: itemViewOne)
 		add(childVC: followerItemVC, to: itemViewTwo)
 		
-		dateLabel.text = "Joined \(user.createdAt.convertToDisplayFormat())"
+		let newFormatter = ISO8601DateFormatter()
+		if let date = newFormatter.date(from: user.createdAt) {
+			dateLabel.text = "Joined \(date.convertToMontYearFormat())"
+		}
+		
+		layoutUI()
 	}
 
 	
@@ -96,7 +114,7 @@ class UserInfoVC: UIViewController {
 			
 			$0.translatesAutoresizingMaskIntoConstraints = false
 			
-			if $0 != dateLabel {
+			if $0 != dateLabel, $0 != userInfoHeader {
 				$0.snp.makeConstraints { make in
 					make.leading.trailing.equalTo(view).inset(padding)
 					make.height.equalTo(itemHeight)
@@ -104,9 +122,12 @@ class UserInfoVC: UIViewController {
 			}
 			
 		}
+//		let h = userInfoHeader.bioLabel.frame.height
 				
 		userInfoHeader.snp.makeConstraints { make in
 			make.top.equalTo(view.safeAreaLayoutGuide).inset(padding)
+			make.leading.trailing.equalTo(view).inset(padding)
+			
 		}
 		
 		itemViewOne.snp.makeConstraints { make in
@@ -138,13 +159,13 @@ class UserInfoVC: UIViewController {
 
 //MARK: UserInfoVCDelegate
 extension UserInfoVC: UserInfoVCDelegate  {
+	
 	func didTapGitHubProfile(for user: User)  {
 		// Show Safari VC
 		guard let url = URL(string: user.htmlUrl) else {
 			presentGFAlertOnMainTread(title: "Invalid URL", message: "The url is incorrect", buttonTitle: "Ok")
 			return
 		}
-		
 		presentSafariVC(with: url)
 	}
 	

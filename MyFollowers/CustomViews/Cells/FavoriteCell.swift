@@ -60,6 +60,7 @@ class FavoriteCell: UITableViewCell {
 		}
 	}
 	
+	
 	override func prepareForReuse() {
 		super.prepareForReuse()
 		avatarImageView.image = avatarImageView.placeholderImage

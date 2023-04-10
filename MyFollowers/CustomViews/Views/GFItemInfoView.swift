@@ -63,6 +63,7 @@ final class GFItemInfoView: UIView {
 		}
 	}
 	
+	
 	func set(itemInfoType: ItemInfoType, with count: Int) {
 		switch itemInfoType {
 			case .repos:

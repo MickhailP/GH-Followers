@@ -48,7 +48,9 @@ class GFUserInfoHeaderVC: UIViewController {
 		nameLabel.text = user.name ?? "NA"
 		locationLabel.text = user.location ?? "No location"
 		bioLabel.text = user.bio ?? "No bio available"
+		bioLabel.lineBreakMode = .byWordWrapping
 		bioLabel.numberOfLines = 0
+		bioLabel.sizeToFit()
 		locationImageView.image = UIImage(systemName: Constants.Images.location)
 		locationImageView.tintColor = .secondaryLabel
 		
@@ -68,8 +70,6 @@ class GFUserInfoHeaderVC: UIViewController {
 		let padding: CGFloat = 20
 		let textImagePadding: CGFloat = 12
 		let lineGap: CGFloat = 5
-		
-		
 			
 		avatarImageView.snp.makeConstraints { make in
 			make.top.equalTo(view).inset(padding)
@@ -107,8 +107,7 @@ class GFUserInfoHeaderVC: UIViewController {
 		bioLabel.snp.makeConstraints { make in
 			make.leading.trailing.equalTo(view).offset(padding)
 			make.top.equalTo(avatarImageView.snp.bottom).offset(padding)
-			make.bottom.equalTo(view.snp.bottom)
-			.inset(padding)		}
+			make.bottom.equalTo(view.snp.bottom).inset(padding)
+		}
 	}
-
 }

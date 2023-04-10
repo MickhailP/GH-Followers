@@ -32,16 +32,18 @@ class SearchVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
-        usernameTextfield.text = "SAllen0400" 
+        usernameTextfield.text = ""
     }
 
     private func configureLogoImageView() {
         view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.image = UIImage(named: Constants.Images.logo)!
+        logoImageView.image = UIImage(named: Constants.Images.logo)
+		
+		let topConstantConstraint: CGFloat = Constants.DeviceTypes.isiPhoneSE || Constants.DeviceTypes.isiPhone8Zoomed ? 20 : 80
         
         logoImageView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(80)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(topConstantConstraint)
             make.centerX.equalToSuperview()
             make.height.equalTo(200)
             make.width.equalTo(200)
@@ -70,6 +72,7 @@ class SearchVC: UIViewController {
     
     private func configureCallToActionButton() {
         view.addSubview(callToActionButton)
+		
         callToActionButton.addTarget(self, action: #selector(pushFollowerListVC), for: .touchUpInside)
         
         callToActionButton.snp.makeConstraints { make in
@@ -87,15 +90,17 @@ class SearchVC: UIViewController {
             return
         }
         
-        let followerListVC          = FollowerListVC()
-        followerListVC.userName     = usernameTextfield.text
-        followerListVC.title        = usernameTextfield.text
+		let followerListVC = FollowerListVC(userName: usernameTextfield.text ?? "NA")
+        
         navigationController?.pushViewController(followerListVC, animated: true)
+		
+		usernameTextfield.resignFirstResponder()
     }
 	
 	
 	private func createDismissKeyboardTapGesture(){
-		let tap = UITapGestureRecognizer(target: self.view, action: #selector(view.endEditing(_:)))
+		let tap = UITapGestureRecognizer(target: view, action: #selector(view.endEditing(_:)))
+
 		view.addGestureRecognizer(tap)
 	}
 }
@@ -103,6 +108,7 @@ class SearchVC: UIViewController {
 extension SearchVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+		pushFollowerListVC()
         return true
     }
 }
