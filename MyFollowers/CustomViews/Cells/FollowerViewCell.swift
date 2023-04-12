@@ -42,8 +42,7 @@ class FollowerViewCell: UICollectionViewCell {
     
 	
     private func configure() {
-        addSubview(avatarImageView)
-        addSubview(usernameLabel)
+		addSubViews(avatarImageView, usernameLabel)
         
         avatarImageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(contentView).inset(8)

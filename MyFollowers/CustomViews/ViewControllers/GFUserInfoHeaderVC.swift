@@ -107,7 +107,8 @@ class GFUserInfoHeaderVC: UIViewController {
 		bioLabel.snp.makeConstraints { make in
 			make.leading.trailing.equalTo(view).offset(padding)
 			make.top.equalTo(avatarImageView.snp.bottom).offset(padding)
-			make.bottom.equalTo(view.snp.bottom).inset(padding)
+//			make.bottom.equalTo(view.snp.bottom).inset(padding)
+			make.height.equalTo(90)
 		}
 	}
 }

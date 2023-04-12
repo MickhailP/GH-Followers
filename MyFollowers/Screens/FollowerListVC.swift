@@ -8,9 +8,6 @@
 import UIKit
 import SnapKit
 
-protocol FollowerListVCDelegate: AnyObject {
-	func requestFollowers(for username: String)
-}
 
 class FollowerListVC: GFDataLoadingVC {
 	
@@ -248,9 +245,9 @@ extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate{
 }
 
 
-//MARK: FollowerListVCDelegate
+//MARK: UserInfoVCDelegate
 
-extension FollowerListVC: FollowerListVCDelegate {
+extension FollowerListVC: UserInfoVCDelegate {
 	func requestFollowers(for username: String) {
 		self.userName = username
 		title = username

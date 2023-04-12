@@ -18,8 +18,6 @@ class GFItemInfoVC: UIViewController {
 	
 	var user: User?
 	
-	weak var delegate: UserInfoVCDelegate?
-	
 	
 	init(user: User) {
 		super.init(nibName: nil, bundle: nil)
@@ -44,14 +42,16 @@ class GFItemInfoVC: UIViewController {
 	private func configureBackgroundView() {
 		view.layer.cornerRadius = 18
 		view.backgroundColor = .secondarySystemBackground
-		
 	}
 	
 	
 	private func configureStackView() {
 		stackView.axis = .horizontal
 		stackView.distribution = .fillEqually
-		
+
+		itemInfoOne.translatesAutoresizingMaskIntoConstraints = false
+		itemInfoTwo.translatesAutoresizingMaskIntoConstraints = false
+
 		stackView.addArrangedSubview(itemInfoOne)
 		stackView.addArrangedSubview(itemInfoTwo)
 	}
@@ -67,11 +67,11 @@ class GFItemInfoVC: UIViewController {
 	
 	
 	private func layoutUI() {
-		view.addSubview(stackView)
-		view.addSubview(actionButton)
+		view.addSubViews(stackView, actionButton)
 		
 		stackView.translatesAutoresizingMaskIntoConstraints = false
 		actionButton.translatesAutoresizingMaskIntoConstraints = false
+
 		
 		let padding: CGFloat = 20
 		

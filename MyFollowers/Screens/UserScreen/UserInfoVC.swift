@@ -9,11 +9,12 @@ import UIKit
 import SnapKit
 
 
-//MARK: Delegate Protocol
 protocol UserInfoVCDelegate: AnyObject {
-	func didTapGitHubProfile(for user: User)
-	func didTapGetFollowers(for user: User)
+	func requestFollowers(for username: String)
 }
+
+
+typealias ItemInfoVCDelegates = FollowersInfoVCDelegate & RepoInfoVCDelegate
 
 
 //MARK: ViewController
@@ -28,19 +29,17 @@ class UserInfoVC: GFDataLoadingVC {
 	
 	let dateLabel = GFBodyLabel(textAlignment: .center)
 	
-	weak var delegate: FollowerListVCDelegate?
-	
+	weak var delegate: UserInfoVCDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 		
 		configureVC()
+		layoutUI()
 		
 		if let userName {
 			getUser(userName)
 		}
-		
-		
 	}
     
 	
@@ -84,11 +83,8 @@ class UserInfoVC: GFDataLoadingVC {
 	
 	private func configureUIElements(with user: User) {
 		
-		let repoItemVC = GFRepoItemVC(user: user)
-		repoItemVC.delegate = self
-		
-		let followerItemVC = GFFollowersItemVC(user: user)
-		followerItemVC.delegate = self
+		let repoItemVC = GFRepoItemVC(user: user, delegate: self)
+		let followerItemVC = GFFollowersItemVC(user: user, delegate: self)
 		
 		add(childVC: GFUserInfoHeaderVC(user: user), to: userInfoHeader)
 		add(childVC: repoItemVC, to: itemViewOne)
@@ -98,8 +94,6 @@ class UserInfoVC: GFDataLoadingVC {
 		if let date = newFormatter.date(from: user.createdAt) {
 			dateLabel.text = "Joined \(date.convertToMontYearFormat())"
 		}
-		
-		layoutUI()
 	}
 
 	
@@ -108,10 +102,10 @@ class UserInfoVC: GFDataLoadingVC {
 		let itemHeight: CGFloat = 180
 		
 		itemViews = [userInfoHeader, itemViewOne, itemViewTwo, dateLabel]
-		
+
 		itemViews.forEach{
 			view.addSubview($0)
-			
+
 			$0.translatesAutoresizingMaskIntoConstraints = false
 			
 			if $0 != dateLabel, $0 != userInfoHeader {
@@ -120,14 +114,12 @@ class UserInfoVC: GFDataLoadingVC {
 					make.height.equalTo(itemHeight)
 				}
 			}
-			
 		}
-//		let h = userInfoHeader.bioLabel.frame.height
 				
 		userInfoHeader.snp.makeConstraints { make in
 			make.top.equalTo(view.safeAreaLayoutGuide).inset(padding)
 			make.leading.trailing.equalTo(view).inset(padding)
-			
+			make.height.equalTo(210)
 		}
 		
 		itemViewOne.snp.makeConstraints { make in
@@ -141,7 +133,7 @@ class UserInfoVC: GFDataLoadingVC {
 		dateLabel.snp.makeConstraints { make in
 			make.leading.trailing.equalTo(view).inset(padding)
 			make.top.equalTo(itemViewTwo.snp.bottom).offset(padding)
-			make.height.equalTo(18)
+			make.height.equalTo(50)
 		}
 	}
 	
@@ -157,8 +149,8 @@ class UserInfoVC: GFDataLoadingVC {
 }
 
 
-//MARK: UserInfoVCDelegate
-extension UserInfoVC: UserInfoVCDelegate  {
+//MARK: ItemInfoVCDelegates
+extension UserInfoVC: ItemInfoVCDelegates {
 	
 	func didTapGitHubProfile(for user: User)  {
 		// Show Safari VC
