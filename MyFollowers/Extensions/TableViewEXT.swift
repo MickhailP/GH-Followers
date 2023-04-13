@@ -15,6 +15,8 @@ extension UITableView {
 			self.reloadData()
 		}
 	}
+
+	
 	func removeExcessCells() {
 		tableFooterView = UIView(frame: .zero)
 	}

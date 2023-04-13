@@ -7,11 +7,9 @@
 
 import UIKit
 
-class GFAvatarImageView: UIImageView {
+final class GFAvatarImageView: UIImageView {
 	
 	let placeholderImage = Constants.Images.placeholderImage
-	
-//	private let cache = NetworkManager.cache
 	
 	
 	override init(frame: CGRect) {
@@ -23,8 +21,7 @@ class GFAvatarImageView: UIImageView {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	
-	
+
 	
 	private func configure() {
 		layer.cornerRadius = 10

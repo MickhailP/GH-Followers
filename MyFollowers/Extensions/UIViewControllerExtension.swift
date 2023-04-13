@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 import SafariServices
 
-
 extension UIViewController {
 	
 	func presentGFAlertOnMainTread(title: String, message: String, buttonTitle: String) {

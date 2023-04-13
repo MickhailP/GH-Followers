@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GFButton: UIButton {
+final class GFButton: UIButton {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,6 +19,7 @@ class GFButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 
+	
     convenience init(backgroundColor: UIColor, title: String) {
         self.init(frame: .zero)
         self.backgroundColor = backgroundColor

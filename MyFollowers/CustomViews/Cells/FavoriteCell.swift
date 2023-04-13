@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class FavoriteCell: UITableViewCell {
+final class FavoriteCell: UITableViewCell {
 
 	static let reuseID = Constants.CellsNames.favoriteCell
 	
@@ -62,7 +62,6 @@ class FavoriteCell: UITableViewCell {
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()
-		avatarImageView.image = avatarImageView.placeholderImage
-
+		avatarImageView.image = avatarImageView.placeholderImage   
 	}
 }

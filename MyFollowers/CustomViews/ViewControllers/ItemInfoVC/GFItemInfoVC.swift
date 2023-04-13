@@ -8,7 +8,6 @@
 import UIKit
 import SnapKit
 
-
 class GFItemInfoVC: UIViewController {
 	
 	let stackView = UIStackView()
@@ -60,7 +59,8 @@ class GFItemInfoVC: UIViewController {
 	private func configureActionButton() {
 		actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
 	}
-	
+
+
 	// STUB
 	// Overrides in child classes
 	@objc func actionButtonTapped() {	}

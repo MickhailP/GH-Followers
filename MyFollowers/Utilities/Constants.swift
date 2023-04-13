@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 enum Constants {
     
 	enum Icons {

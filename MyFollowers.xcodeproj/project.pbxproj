@@ -13,6 +13,7 @@
 		D734C50429DB5C51004A9EB4 /* FavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D734C50329DB5C51004A9EB4 /* FavoriteCell.swift */; };
 		D737BD8029E483700093A3CD /* UIViewEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D737BD7F29E483700093A3CD /* UIViewEXT.swift */; };
 		D761803329E73D7A001D13E7 /* TableViewEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D761803229E73D7A001D13E7 /* TableViewEXT.swift */; };
+		D761803529E88606001D13E7 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D761803429E88606001D13E7 /* .gitignore */; };
 		D78A32D329CB7756001149B5 /* GFEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78A32D229CB7756001149B5 /* GFEmptyView.swift */; };
 		D78A32D529CCC0A1001149B5 /* UserInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78A32D429CCC0A1001149B5 /* UserInfoVC.swift */; };
 		D78A32D729D22879001149B5 /* GFUserInfoHeaderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78A32D629D22879001149B5 /* GFUserInfoHeaderVC.swift */; };
@@ -55,6 +56,7 @@
 		D734C50329DB5C51004A9EB4 /* FavoriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCell.swift; sourceTree = "<group>"; };
 		D737BD7F29E483700093A3CD /* UIViewEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewEXT.swift; sourceTree = "<group>"; };
 		D761803229E73D7A001D13E7 /* TableViewEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewEXT.swift; sourceTree = "<group>"; };
+		D761803429E88606001D13E7 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		D78A32D229CB7756001149B5 /* GFEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFEmptyView.swift; sourceTree = "<group>"; };
 		D78A32D429CCC0A1001149B5 /* UserInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoVC.swift; sourceTree = "<group>"; };
 		D78A32D629D22879001149B5 /* GFUserInfoHeaderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFUserInfoHeaderVC.swift; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				D7BFEB6529C0E519005A235F /* Info.plist */,
+				D761803429E88606001D13E7 /* .gitignore */,
 				D7A4024229C381E20018F7DB /* Support */,
 				D7A4024029C3812E0018F7DB /* Screens */,
 				D7A4024329C3B0600018F7DB /* Models */,
@@ -366,6 +369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7BFEB6429C0E519005A235F /* LaunchScreen.storyboard in Resources */,
+				D761803529E88606001D13E7 /* .gitignore in Resources */,
 				D7BFEB6129C0E519005A235F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

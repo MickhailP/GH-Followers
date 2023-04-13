@@ -12,7 +12,8 @@ class GFEmptyView: UIView {
 	
 	let messageLabel = GFTitleLabel(textAlignment: .center, fontSize: 28)
 	let logoImage = UIImageView()
-	
+
+
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		configure()
@@ -40,7 +41,6 @@ class GFEmptyView: UIView {
 		logoImage.translatesAutoresizingMaskIntoConstraints = false
 		
 		let messageLabelCenterYConstant: CGFloat = Constants.DeviceTypes.isiPhoneSE || Constants.DeviceTypes.isiPhone8Zoomed ? -50 : -150
-		
 		let logoBottomConstant: CGFloat = Constants.DeviceTypes.isiPhoneSE || Constants.DeviceTypes.isiPhone8Zoomed ? 100 : 60
 		
 		messageLabel.snp.makeConstraints { make in

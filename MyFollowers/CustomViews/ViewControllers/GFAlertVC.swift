@@ -7,7 +7,8 @@
 
 import UIKit
 
-class GFAlertVC: UIViewController {
+final class GFAlertVC: UIViewController {
+
     let containerView = GFAlertContainerView()
     let titleLabel = GFTitleLabel(textAlignment: .center, fontSize: 20)
     let messageLabel = GFBodyLabel(textAlignment: .center)
@@ -18,7 +19,8 @@ class GFAlertVC: UIViewController {
 	var buttonTitle: String?
 	
 	var padding: CGFloat = 20
-	
+
+
 	init(title: String, message: String, buttonTitle: String) {
 		super.init(nibName: nil, bundle: nil)
 		self.alertTitle = title
@@ -68,7 +70,7 @@ class GFAlertVC: UIViewController {
     }
 	
     
-    func configureActionButton() {
+    private func configureActionButton() {
         containerView.addSubview(actionButton)
         actionButton.setTitle(buttonTitle ?? "OK", for: .normal)
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
@@ -81,7 +83,7 @@ class GFAlertVC: UIViewController {
     }
 	
     
-    func configureBodyLabel() {
+	private func configureBodyLabel() {
         containerView.addSubview(messageLabel)
         
         messageLabel.text = message ?? "some error occurred"

@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class FollowerViewCell: UICollectionViewCell {
+final class FollowerViewCell: UICollectionViewCell {
 	
     static let reuseID = "FollowerCell"
     
@@ -35,6 +35,7 @@ class FollowerViewCell: UICollectionViewCell {
 	
     func set(follower: Follower) {
         usernameLabel.text = follower.login
+		
         if let url = follower.avatarURL {
             avatarImageView.getImage(from: url)
         }

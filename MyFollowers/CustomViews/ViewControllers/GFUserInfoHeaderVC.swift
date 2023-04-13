@@ -8,7 +8,8 @@
 import UIKit
 import SnapKit
 
-class GFUserInfoHeaderVC: UIViewController {
+final class GFUserInfoHeaderVC: UIViewController {
+
 	let avatarImageView = GFAvatarImageView(frame: .zero)
 	let usernameLabel = GFTitleLabel(textAlignment: .left, fontSize: Constants.FontSizes.header1)
 	let nameLabel = GFSecondaryTitleLabel(fontSize: Constants.FontSizes.header2)
@@ -17,16 +18,19 @@ class GFUserInfoHeaderVC: UIViewController {
 	let bioLabel = GFBodyLabel(textAlignment: .left)
 	
 	var user: User?
-	
+
+
 	init(user: User) {
 		super.init(nibName: nil, bundle: nil)
 		self.user = user
 	}
+
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
 		
@@ -63,7 +67,6 @@ class GFUserInfoHeaderVC: UIViewController {
 			view.addSubview($0)
 			$0.translatesAutoresizingMaskIntoConstraints = false
 		}
-		
 	}
 	
 	private func layoutUI() {
@@ -107,7 +110,6 @@ class GFUserInfoHeaderVC: UIViewController {
 		bioLabel.snp.makeConstraints { make in
 			make.leading.trailing.equalTo(view).offset(padding)
 			make.top.equalTo(avatarImageView.snp.bottom).offset(padding)
-//			make.bottom.equalTo(view.snp.bottom).inset(padding)
 			make.height.equalTo(90)
 		}
 	}

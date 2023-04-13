@@ -21,7 +21,10 @@ typealias ItemInfoVCDelegates = FollowersInfoVCDelegate & RepoInfoVCDelegate
 class UserInfoVC: GFDataLoadingVC {
 	
 	var userName: String?
-	
+
+	let scrollView = UIScrollView()
+	let contentView = UIView()
+
 	var itemViews: [UIView] = []
 	let userInfoHeader = UIView()
 	let itemViewOne = UIView()
@@ -31,17 +34,18 @@ class UserInfoVC: GFDataLoadingVC {
 	
 	weak var delegate: UserInfoVCDelegate?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
 		
 		configureVC()
+		configureScrollVIew()
 		layoutUI()
 		
 		if let userName {
 			getUser(userName)
 		}
 	}
-    
+
 	
 	@objc func dismissView() {
 		dismiss(animated: true)
@@ -56,7 +60,7 @@ class UserInfoVC: GFDataLoadingVC {
 	
 	
 	private func getUser(_ name: String) {
-//		showLoadingView()
+		//		showLoadingView()
 		
 		NetworkManager.shared.getUser(for: name) { [weak self] result in
 			guard let self = self else {
@@ -64,7 +68,7 @@ class UserInfoVC: GFDataLoadingVC {
 				return
 			}
 			
-//			self.dismissLoadingView()
+			//			self.dismissLoadingView()
 			
 			switch result {
 				case .success(let user):
@@ -104,21 +108,21 @@ class UserInfoVC: GFDataLoadingVC {
 		itemViews = [userInfoHeader, itemViewOne, itemViewTwo, dateLabel]
 
 		itemViews.forEach{
-			view.addSubview($0)
+			contentView.addSubview($0)
 
 			$0.translatesAutoresizingMaskIntoConstraints = false
 			
 			if $0 != dateLabel, $0 != userInfoHeader {
 				$0.snp.makeConstraints { make in
-					make.leading.trailing.equalTo(view).inset(padding)
+					make.leading.trailing.equalTo(contentView).inset(padding)
 					make.height.equalTo(itemHeight)
 				}
 			}
 		}
-				
+
 		userInfoHeader.snp.makeConstraints { make in
-			make.top.equalTo(view.safeAreaLayoutGuide).inset(padding)
-			make.leading.trailing.equalTo(view).inset(padding)
+			make.top.equalTo(contentView.safeAreaLayoutGuide).inset(padding)
+			make.leading.trailing.equalTo(contentView).inset(padding)
 			make.height.equalTo(210)
 		}
 		
@@ -131,7 +135,7 @@ class UserInfoVC: GFDataLoadingVC {
 		}
 		
 		dateLabel.snp.makeConstraints { make in
-			make.leading.trailing.equalTo(view).inset(padding)
+			make.leading.trailing.equalTo(contentView).inset(padding)
 			make.top.equalTo(itemViewTwo.snp.bottom).offset(padding)
 			make.height.equalTo(50)
 		}
@@ -145,6 +149,19 @@ class UserInfoVC: GFDataLoadingVC {
 		childVC.didMove(toParent: self)
 		containerView.layer.cornerRadius = 10
 		containerView.layer.masksToBounds = true
+	}
+
+
+	private func configureScrollVIew() {
+		view.addSubview(scrollView)
+		scrollView.addSubview(contentView)
+
+		scrollView.pinToEdges(of: view)
+		contentView.pinToEdges(of: scrollView)
+		contentView.snp.makeConstraints { make in
+			make.width.equalToSuperview()
+			make.height.equalTo(1000)
+		}
 	}
 }
 
