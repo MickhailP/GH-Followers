@@ -242,6 +242,7 @@
 		D7BFEB4B29C0E511005A235F = {
 			isa = PBXGroup;
 			children = (
+				D761803429E88606001D13E7 /* .gitignore */,
 				D7BFEB5629C0E511005A235F /* MyFollowers */,
 				D7BFEB5529C0E511005A235F /* Products */,
 			);
@@ -259,7 +260,6 @@
 			isa = PBXGroup;
 			children = (
 				D7BFEB6529C0E519005A235F /* Info.plist */,
-				D761803429E88606001D13E7 /* .gitignore */,
 				D7A4024229C381E20018F7DB /* Support */,
 				D7A4024029C3812E0018F7DB /* Screens */,
 				D7A4024329C3B0600018F7DB /* Models */,

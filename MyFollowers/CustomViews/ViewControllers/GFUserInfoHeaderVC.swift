@@ -16,8 +16,17 @@ final class GFUserInfoHeaderVC: UIViewController {
 	let locationImageView = UIImageView()
 	let locationLabel = GFSecondaryTitleLabel(fontSize: Constants.FontSizes.header2)
 	let bioLabel = GFBodyLabel(textAlignment: .left)
-	
+
 	var user: User?
+
+	let padding: CGFloat = 20
+	let lineGap: CGFloat = 5
+
+	var bioLabelHeightConstraint: NSLayoutConstraint?
+
+	var contentHeight: CGFloat {
+		avatarImageView.frame.height + bioLabel.intrinsicContentSize.height + padding * 3
+	}
 
 
 	init(user: User) {
@@ -35,12 +44,21 @@ final class GFUserInfoHeaderVC: UIViewController {
         super.viewDidLoad()
 		
 		view.backgroundColor = .secondarySystemBackground
-
         addSubviews()
 		layoutUI()
-		configureUIElements()
     }
-	
+
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		configureUIElements()
+	}
+
+
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+	}
+
 	
 	private func configureUIElements() {
 		guard let user else {
@@ -51,13 +69,13 @@ final class GFUserInfoHeaderVC: UIViewController {
 		usernameLabel.text = user.login
 		nameLabel.text = user.name ?? "NA"
 		locationLabel.text = user.location ?? "No location"
+
 		bioLabel.text = user.bio ?? "No bio available"
-		bioLabel.lineBreakMode = .byWordWrapping
-		bioLabel.numberOfLines = 0
-		bioLabel.sizeToFit()
+		bioLabelHeightConstraint?.constant = bioLabel.intrinsicContentSize.height + 5
+		view.layoutIfNeeded()
+
 		locationImageView.image = UIImage(systemName: Constants.Images.location)
 		locationImageView.tintColor = .secondaryLabel
-		
 	}
 	
 	
@@ -68,12 +86,12 @@ final class GFUserInfoHeaderVC: UIViewController {
 			$0.translatesAutoresizingMaskIntoConstraints = false
 		}
 	}
+
 	
 	private func layoutUI() {
-		let padding: CGFloat = 20
+
 		let textImagePadding: CGFloat = 12
-		let lineGap: CGFloat = 5
-			
+
 		avatarImageView.snp.makeConstraints { make in
 			make.top.equalTo(view).inset(padding)
 			make.leading.equalTo(view).inset(padding)
@@ -108,9 +126,9 @@ final class GFUserInfoHeaderVC: UIViewController {
 		}
 		
 		bioLabel.snp.makeConstraints { make in
-			make.leading.trailing.equalTo(view).offset(padding)
+			make.leading.trailing.equalTo(view).inset(padding)
 			make.top.equalTo(avatarImageView.snp.bottom).offset(padding)
-			make.height.equalTo(90)
+			bioLabelHeightConstraint = make.height.equalTo(50).constraint.layoutConstraints[0]
 		}
 	}
 }

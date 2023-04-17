@@ -34,6 +34,9 @@ class UserInfoVC: GFDataLoadingVC {
 	
 	weak var delegate: UserInfoVCDelegate?
 
+	var userInfoHeaderHeightConstraint: NSLayoutConstraint?
+
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -46,12 +49,17 @@ class UserInfoVC: GFDataLoadingVC {
 		}
 	}
 
+
+	override func viewWillLayoutSubviews() {
+		super.viewWillLayoutSubviews()
+	}
+
 	
 	@objc func dismissView() {
 		dismiss(animated: true)
 	}
-	
-	
+
+
 	private func configureVC() {
 		view.backgroundColor = .systemBackground
 		let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissView))
@@ -89,11 +97,18 @@ class UserInfoVC: GFDataLoadingVC {
 		
 		let repoItemVC = GFRepoItemVC(user: user, delegate: self)
 		let followerItemVC = GFFollowersItemVC(user: user, delegate: self)
-		
-		add(childVC: GFUserInfoHeaderVC(user: user), to: userInfoHeader)
+
+		let userSectionVC = GFUserInfoHeaderVC(user: user)
+
+		add(childVC: userSectionVC, to: userInfoHeader)
 		add(childVC: repoItemVC, to: itemViewOne)
 		add(childVC: followerItemVC, to: itemViewTwo)
-		
+
+		userSectionVC.view.layoutIfNeeded()
+		userInfoHeaderHeightConstraint?.constant = userSectionVC.contentHeight
+
+		userSectionVC.view.layoutIfNeeded()
+
 		let newFormatter = ISO8601DateFormatter()
 		if let date = newFormatter.date(from: user.createdAt) {
 			dateLabel.text = "Joined \(date.convertToMontYearFormat())"
@@ -123,7 +138,9 @@ class UserInfoVC: GFDataLoadingVC {
 		userInfoHeader.snp.makeConstraints { make in
 			make.top.equalTo(contentView.safeAreaLayoutGuide).inset(padding)
 			make.leading.trailing.equalTo(contentView).inset(padding)
-			make.height.equalTo(210)
+
+			userInfoHeaderHeightConstraint =
+			make.height.greaterThanOrEqualTo(160).constraint.layoutConstraints[0]
 		}
 		
 		itemViewOne.snp.makeConstraints { make in
@@ -140,11 +157,16 @@ class UserInfoVC: GFDataLoadingVC {
 			make.height.equalTo(50)
 		}
 	}
-	
+
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+	}
+
 
 	private func add(childVC: UIViewController, to containerView: UIView) {
 		addChild(childVC)
 		containerView.addSubview(childVC.view)
+		print(#function, "FRAME SETS")
 		childVC.view.frame = containerView.bounds
 		childVC.didMove(toParent: self)
 		containerView.layer.cornerRadius = 10
